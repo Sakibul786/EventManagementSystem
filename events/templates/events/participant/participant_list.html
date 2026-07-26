@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Participants{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <h1 class="text-4xl font-bold">
+        Participants
+    </h1>
+
+    <a href="{% url 'participant_create' %}"
+       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg">
+        + Add Participant
+    </a>
+
+</div>
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <table class="w-full">
+
+        <thead class="bg-gray-100">
+
+            <tr>
+
+                <th class="px-6 py-4 text-left">
+                    Name
+                </th>
+
+                <th class="px-6 py-4 text-left">
+                    Email
+                </th>
+
+                <th class="px-6 py-4 text-center">
+                    Actions
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for participant in participants %}
+
+            <tr class="border-t hover:bg-gray-50">
+
+                <td class="px-6 py-4">
+                    {{ participant.name }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ participant.email }}
+                </td>
+
+                <td class="px-6 py-4 text-center">
+
+                    <a href="{% url 'participant_update' participant.id %}"
+                       class="text-blue-600 hover:underline">
+                        Edit
+                    </a>
+
+                    <span class="mx-2">|</span>
+
+                    <a href="{% url 'participant_delete' participant.id %}"
+                       class="text-red-600 hover:underline">
+                        Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="3"
+                    class="text-center py-10 text-gray-500">
+
+                    No Participants Found.
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

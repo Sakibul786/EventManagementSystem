@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}All Participants{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <h1 class="text-4xl font-bold">
+        All Participants
+    </h1>
+
+    <a href="{% url 'dashboard' %}"
+       class="bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 rounded-lg">
+        ← Dashboard
+    </a>
+
+</div>
+
+<div class="bg-white shadow-lg rounded-xl overflow-hidden">
+
+    <table class="min-w-full">
+
+        <thead class="bg-gray-100">
+
+            <tr>
+
+                <th class="px-6 py-4 text-left">
+                    Name
+                </th>
+
+                <th class="px-6 py-4 text-left">
+                    Email
+                </th>
+
+                <th class="px-6 py-4 text-left">
+                    Phone
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for participant in participants %}
+
+            <tr class="border-t hover:bg-gray-50">
+
+                <td class="px-6 py-4">
+                    {{ participant.name }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ participant.email }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ participant.phone }}
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="3"
+                    class="px-6 py-8 text-center text-gray-500">
+
+                    No Participants Found
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Participant{% endblock %}
+
+{% block content %}
+
+<div class="max-w-xl mx-auto bg-white shadow-lg rounded-xl p-8">
+
+    <h2 class="text-3xl font-bold mb-6">
+
+        Participant Form
+
+    </h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="mt-6">
+
+            <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+
+                Save
+
+            </button>
+
+            <a href="{% url 'participant_list' %}"
+               class="ml-4 text-gray-600">
+
+                Cancel
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
