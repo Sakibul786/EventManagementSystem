@@ -2,7 +2,9 @@
 module.exports = {
   content: [
     "./events/templates/**/*.html",
-    "./events/**/*.py",
+    "./accounts/templates/**/*.html",
+    "./events/views/**/*.py",
+    "./accounts/**/*.py",
   ],
   theme: {
     extend: {},

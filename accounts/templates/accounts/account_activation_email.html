@@ -1,0 +1,18 @@
+Hi {{ user.first_name|default:user.username }},
+
+Welcome to the Event Management System!
+
+Thank you for registering.
+
+Please click the link below to verify your email address and activate your account:
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+If the link above doesn't work, copy and paste it into your browser.
+
+This link is valid for a limited time.
+
+If you did not create this account, you can safely ignore this email.
+
+Regards,
+Event Management System Team

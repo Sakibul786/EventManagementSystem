@@ -1,11 +1,26 @@
 from django.shortcuts import render
 from django.utils import timezone
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from events.models import Event, Participant, Category
 
 
+# -----------------------------
+# Role Checking Functions
+# -----------------------------
+
+def is_admin(user):
+    return user.is_superuser or user.groups.filter(name="Admin").exists()
+
+
+# -----------------------------
+# Dashboard
+# -----------------------------
+
+@login_required
 def dashboard(request):
+
     today = timezone.localdate()
 
     total_events = Event.objects.count()
@@ -47,7 +62,15 @@ def dashboard(request):
         "dashboard.html",
         context,
     )
+
+
+# -----------------------------
+# All Events
+# -----------------------------
+
+@login_required
 def dashboard_events(request):
+
     events = (
         Event.objects
         .select_related("category")
@@ -58,31 +81,57 @@ def dashboard_events(request):
     return render(
         request,
         "all_events.html",
-        {"events": events},
+        {
+            "events": events,
+        },
     )
 
 
+# -----------------------------
+# Categories (Admin Only)
+# -----------------------------
+
+@login_required
+@user_passes_test(is_admin)
 def dashboard_categories(request):
+
     categories = Category.objects.order_by("name")
 
     return render(
         request,
         "all_categories.html",
-        {"categories": categories},
+        {
+            "categories": categories,
+        },
     )
 
 
+# -----------------------------
+# Participants (Admin Only)
+# -----------------------------
+
+@login_required
+@user_passes_test(is_admin)
 def dashboard_participants(request):
+
     participants = Participant.objects.order_by("name")
 
     return render(
         request,
         "all_participants.html",
-        {"participants": participants},
+        {
+            "participants": participants,
+        },
     )
 
 
+# -----------------------------
+# Upcoming Events
+# -----------------------------
+
+@login_required
 def dashboard_upcoming(request):
+
     today = timezone.localdate()
 
     events = (
@@ -96,11 +145,19 @@ def dashboard_upcoming(request):
     return render(
         request,
         "upcoming_events.html",
-        {"events": events},
+        {
+            "events": events,
+        },
     )
 
 
+# -----------------------------
+# Past Events
+# -----------------------------
+
+@login_required
 def dashboard_past(request):
+
     today = timezone.localdate()
 
     events = (
@@ -114,5 +171,7 @@ def dashboard_past(request):
     return render(
         request,
         "past_events.html",
-        {"events": events},
+        {
+            "events": events,
+        },
     )
