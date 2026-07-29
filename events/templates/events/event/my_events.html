@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}My Events{% endblock %}
+
+{% block content %}
+
+<div class="flex items-center justify-between mb-8">
+
+    <h1 class="text-4xl font-bold">
+        My Registered Events
+    </h1>
+
+    <a href="{% url 'event_list' %}"
+       class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg">
+        All Events
+    </a>
+
+</div>
+
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <table class="min-w-full">
+
+        <thead class="bg-gray-100">
+
+            <tr>
+
+                <th class="px-6 py-4 text-left">Event</th>
+                <th class="px-6 py-4 text-left">Category</th>
+                <th class="px-6 py-4 text-left">Date</th>
+                <th class="px-6 py-4 text-left">Time</th>
+                <th class="px-6 py-4 text-left">Location</th>
+                <th class="px-6 py-4 text-center">Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for event in events %}
+
+            <tr class="border-t hover:bg-gray-50">
+
+                <td class="px-6 py-4">
+                    {{ event.name }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.category.name }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.date }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.time }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.location }}
+                </td>
+
+                <td class="px-6 py-4 text-center">
+
+                    <a href="{% url 'unregister_event' event.id %}"
+                       class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                        Cancel Registration
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="6"
+                    class="text-center py-10 text-gray-500">
+                    You haven't registered for any events yet.
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

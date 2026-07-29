@@ -24,4 +24,17 @@ urlpatterns = [
         views.activate,
         name="activate",
     ),
+
+     # User Management
+    path(
+        "users/",
+        views.user_list,
+        name="user_list",
+    ),
+
+    path(
+        "users/<int:user_id>/change-role/",
+        views.change_role,
+        name="change_role",
+    ),
 ]

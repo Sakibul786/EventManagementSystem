@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import (
@@ -16,7 +17,12 @@ from django.core.mail import EmailMessage
 
 from .forms import SignUpForm
 from .tokens import account_activation_token
+from events.models import Participant
 
+
+# ==========================================
+# Signup
+# ==========================================
 
 def signup(request):
 
@@ -28,11 +34,18 @@ def signup(request):
 
             user = form.save(commit=False)
 
-            # User cannot login until email is verified
+            # User cannot login until email verification
             user.is_active = False
             user.save()
 
-            # Add user to Participant group
+            # Create Participant Profile
+            Participant.objects.create(
+                user=user,
+                name=f"{user.first_name} {user.last_name}".strip() or user.username,
+                email=user.email,
+            )
+
+            # Add to Participant Group
             participant_group, created = Group.objects.get_or_create(
                 name="Participant"
             )
@@ -82,6 +95,10 @@ def signup(request):
     )
 
 
+# ==========================================
+# Account Activation
+# ==========================================
+
 def activate(request, uidb64, token):
 
     try:
@@ -122,6 +139,10 @@ def activate(request, uidb64, token):
 
         return redirect("signup")
 
+
+# ==========================================
+# Login
+# ==========================================
 
 def user_login(request):
 
@@ -167,6 +188,10 @@ def user_login(request):
     )
 
 
+# ==========================================
+# Logout
+# ==========================================
+
 def user_logout(request):
 
     logout(request)
@@ -177,3 +202,114 @@ def user_logout(request):
     )
 
     return redirect("login")
+
+
+# ==========================================
+# Permission Functions
+# ==========================================
+
+def is_admin(user):
+    return (
+        user.is_superuser
+        or user.groups.filter(name="Admin").exists()
+    )
+
+
+def is_admin_or_organizer(user):
+    return (
+        user.is_superuser
+        or user.groups.filter(name="Admin").exists()
+        or user.groups.filter(name="Organizer").exists()
+    )
+
+
+# ==========================================
+# User List
+# Admin + Organizer
+# ==========================================
+
+@login_required
+@user_passes_test(is_admin_or_organizer)
+def user_list(request):
+
+    users = User.objects.all().order_by("username")
+
+    return render(
+        request,
+        "accounts/user_list.html",
+        {
+            "users": users,
+        },
+    )
+
+
+# ==========================================
+# Change Role
+# Admin Only
+# ==========================================
+
+@login_required
+@user_passes_test(is_admin)
+def change_role(request, user_id):
+
+    user = get_object_or_404(
+        User,
+        pk=user_id,
+    )
+
+    # Superuser role cannot be changed
+    if user.is_superuser:
+
+        messages.error(
+            request,
+            "The Superuser role cannot be changed."
+        )
+
+        return redirect("user_list")
+
+    if request.method == "POST":
+
+        role = request.POST.get("role")
+
+        # Remove existing groups
+        user.groups.clear()
+
+        # Add new group
+        group, created = Group.objects.get_or_create(
+            name=role
+        )
+        user.groups.add(group)
+
+        # Create Participant profile if assigning Participant role
+        if role == "Participant":
+
+            Participant.objects.get_or_create(
+                user=user,
+                defaults={
+                    "name": (
+                        f"{user.first_name} {user.last_name}".strip()
+                        or user.username
+                    ),
+                    "email": user.email,
+                },
+            )
+
+        messages.success(
+            request,
+            f"{user.username}'s role has been updated to {role}."
+        )
+
+        return redirect("user_list")
+
+    groups = Group.objects.exclude(
+        name="Admin"
+    )
+
+    return render(
+        request,
+        "accounts/change_role.html",
+        {
+            "selected_user": user,
+            "groups": groups,
+        },
+    )

@@ -8,13 +8,17 @@ class CategoryForm(forms.ModelForm):
         fields = "__all__"
 
         widgets = {
-            "name": forms.TextInput(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
-            "description": forms.Textarea(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
-                "rows": 4
-            }),
+            "name": forms.TextInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
+                    "rows": 4,
+                }
+            ),
         }
 
 
@@ -24,12 +28,21 @@ class ParticipantForm(forms.ModelForm):
         fields = "__all__"
 
         widgets = {
-            "name": forms.TextInput(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
-            "email": forms.EmailInput(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
+            "user": forms.Select(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
+            "name": forms.TextInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
         }
 
 
@@ -39,34 +52,56 @@ class EventForm(forms.ModelForm):
         fields = "__all__"
 
         widgets = {
-            "name": forms.TextInput(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
+            "name": forms.TextInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
 
-            "description": forms.Textarea(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
-                "rows": 4
-            }),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
+                    "rows": 4,
+                }
+            ),
 
-            "date": forms.DateInput(attrs={
-                "type": "date",
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
+            "date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
+                }
+            ),
 
-            "time": forms.TimeInput(attrs={
-                "type": "time",
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
+            "time": forms.TimeInput(
+                attrs={
+                    "type": "time",
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
+                }
+            ),
 
-            "location": forms.TextInput(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
+            "location": forms.TextInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
 
-            "category": forms.Select(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
-            }),
+            "capacity": forms.NumberInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2",
+                    "min": 1,
+                    "placeholder": "Maximum participants",
+                }
+            ),
 
-            "participants": forms.SelectMultiple(attrs={
-                "class": "w-full border border-gray-300 rounded-lg px-4 py-2 h-40"
-            }),
+            "category": forms.Select(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
+
+            "participants": forms.SelectMultiple(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2 h-40"
+                }
+            ),
         }

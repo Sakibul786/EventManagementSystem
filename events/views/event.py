@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
 
-from events.models import Event, Category
+from events.models import Event, Category, Participant
 from events.forms import EventForm
 
 
@@ -50,7 +50,7 @@ def event_list(request):
     if category:
         events = events.filter(category_id=category)
 
-    # Date Range Filter
+    # Date Filter
     start_date = request.GET.get("start_date", "")
     end_date = request.GET.get("end_date", "")
 
@@ -60,14 +60,10 @@ def event_list(request):
     if end_date:
         events = events.filter(date__lte=end_date)
 
-    # Order Events
     events = events.order_by("date", "time")
 
-    # Pagination
     paginator = Paginator(events, 5)
-
     page_number = request.GET.get("page")
-
     page_obj = paginator.get_page(page_number)
 
     context = {
@@ -199,4 +195,157 @@ def event_delete(request, pk):
         {
             "event": event,
         },
+    )
+
+
+# -----------------------------
+# Register Event
+# -----------------------------
+
+@login_required
+def register_event(request, pk):
+
+    event = get_object_or_404(
+        Event,
+        pk=pk,
+    )
+
+    participant = get_object_or_404(
+        Participant,
+        user=request.user,
+    )
+
+    # Already registered
+    if participant in event.participants.all():
+
+        messages.warning(
+            request,
+            "You are already registered for this event."
+        )
+
+        return redirect("event_detail", pk=event.pk)
+
+    # Event Full
+    if event.is_full:
+
+        messages.error(
+            request,
+            "Sorry! This event is already full."
+        )
+
+        return redirect("event_detail", pk=event.pk)
+
+    # Register
+    event.participants.add(participant)
+
+    messages.success(
+        request,
+        "Successfully registered for the event."
+    )
+
+    return redirect("event_detail", pk=event.pk)
+
+
+# -----------------------------
+# Unregister Event
+# -----------------------------
+
+@login_required
+def unregister_event(request, pk):
+
+    event = get_object_or_404(
+        Event,
+        pk=pk,
+    )
+
+    participant = get_object_or_404(
+        Participant,
+        user=request.user,
+    )
+
+    if participant in event.participants.all():
+
+        event.participants.remove(participant)
+
+        messages.success(
+            request,
+            "You have cancelled your registration."
+        )
+
+    else:
+
+        messages.warning(
+            request,
+            "You are not registered for this event."
+        )
+
+    return redirect("event_detail", pk=event.pk)
+
+# -----------------------------
+# My Events
+# -----------------------------
+
+@login_required
+def my_events(request):
+
+    # Only Participants can access this page
+    if not request.user.groups.filter(name="Participant").exists():
+
+        messages.warning(
+            request,
+            "Only participants can view registered events."
+        )
+
+        return redirect("event_list")
+
+    participant = get_object_or_404(
+        Participant,
+        user=request.user,
+    )
+
+    events = (
+        participant.events
+        .select_related("category")
+        .order_by("date", "time")
+    )
+
+    return render(
+        request,
+        "events/event/my_events.html",
+        {
+            "events": events,
+        },
+    )
+
+# -----------------------------
+# Event Detail
+# -----------------------------
+
+@login_required
+def event_detail(request, pk):
+
+    event = get_object_or_404(
+        Event.objects
+        .select_related("category")
+        .prefetch_related("participants"),
+        pk=pk,
+    )
+
+    is_registered = False
+
+    if hasattr(request.user, "participant_profile"):
+
+        is_registered = event.participants.filter(
+            pk=request.user.participant_profile.pk
+        ).exists()
+
+    context = {
+        "event": event,
+        "is_registered": is_registered,
+    }
+
+    return render(
+        request,
+        "events/event/event_detail.html",
+        context,
     )

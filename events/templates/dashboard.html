@@ -1,23 +1,45 @@
 {% extends "base.html" %}
+{% load permissions %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 
+<!-- ================= Heading ================= -->
+
 <div class="flex items-center justify-between mb-8">
 
-    <h1 class="text-4xl font-bold text-gray-800">
-        Organizer Dashboard
-    </h1>
+    {% if user.is_superuser or user|has_group:"Admin" %}
+
+        <h1 class="text-4xl font-bold text-gray-800">
+            Admin Dashboard
+        </h1>
+
+    {% elif user|has_group:"Organizer" %}
+
+        <h1 class="text-4xl font-bold text-gray-800">
+            Organizer Dashboard
+        </h1>
+
+    {% else %}
+
+        <h1 class="text-4xl font-bold text-gray-800">
+            Participant Dashboard
+        </h1>
+
+    {% endif %}
 
 </div>
 
-<!-- Statistics Cards -->
+
+<!-- ================= Statistics ================= -->
+
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
 
     <!-- Total Events -->
+
     <a href="{% url 'dashboard_events' %}">
-        <div class="bg-blue-600 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition duration-300">
+        <div class="bg-blue-600 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition">
 
             <h3 class="text-lg font-semibold">
                 Total Events
@@ -30,9 +52,12 @@
         </div>
     </a>
 
+
     <!-- Categories -->
+    {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Organizer" %}
+
     <a href="{% url 'dashboard_categories' %}">
-        <div class="bg-purple-600 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition duration-300">
+        <div class="bg-purple-600 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition">
 
             <h3 class="text-lg font-semibold">
                 Categories
@@ -45,9 +70,14 @@
         </div>
     </a>
 
+    {% endif %}
+
+
     <!-- Participants -->
+    {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Organizer" %}
+
     <a href="{% url 'dashboard_participants' %}">
-        <div class="bg-green-600 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition duration-300">
+        <div class="bg-green-600 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition">
 
             <h3 class="text-lg font-semibold">
                 Participants
@@ -60,9 +90,13 @@
         </div>
     </a>
 
-    <!-- Upcoming Events -->
+    {% endif %}
+
+
+    <!-- Upcoming -->
+
     <a href="{% url 'dashboard_upcoming' %}">
-        <div class="bg-yellow-500 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition duration-300">
+        <div class="bg-yellow-500 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition">
 
             <h3 class="text-lg font-semibold">
                 Upcoming Events
@@ -75,9 +109,11 @@
         </div>
     </a>
 
-    <!-- Past Events -->
+
+    <!-- Past -->
+
     <a href="{% url 'dashboard_past' %}">
-        <div class="bg-red-500 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition duration-300">
+        <div class="bg-red-500 text-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transition">
 
             <h3 class="text-lg font-semibold">
                 Past Events
@@ -91,7 +127,9 @@
     </a>
 
 </div>
-<!-- Today's Events -->
+
+
+<!-- ================= Today's Events ================= -->
 
 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
 
@@ -111,23 +149,23 @@
 
                 <tr>
 
-                    <th class="px-6 py-4 text-left font-semibold">
+                    <th class="px-6 py-4 text-left">
                         Event
                     </th>
 
-                    <th class="px-6 py-4 text-left font-semibold">
+                    <th class="px-6 py-4 text-left">
                         Category
                     </th>
 
-                    <th class="px-6 py-4 text-left font-semibold">
+                    <th class="px-6 py-4 text-left">
                         Time
                     </th>
 
-                    <th class="px-6 py-4 text-left font-semibold">
+                    <th class="px-6 py-4 text-left">
                         Location
                     </th>
 
-                    <th class="px-6 py-4 text-left font-semibold">
+                    <th class="px-6 py-4 text-left">
                         Participants
                     </th>
 
@@ -158,7 +196,7 @@
                     </td>
 
                     <td class="px-6 py-4">
-                        {{ event.participants.count }}
+                        {{ event.participant_count }} / {{ event.capacity }}
                     </td>
 
                 </tr>

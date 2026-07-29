@@ -99,31 +99,58 @@ urlpatterns = [
         name="participant_delete",
     ),
 
-    # ==========================
-    # Event
-    # ==========================
+ # ==========================
+# Event
+# ==========================
 
-    path(
-        "events/",
-        views.event_list,
-        name="event_list",
-    ),
+path(
+    "events/",
+    views.event_list,
+    name="event_list",
+),
 
-    path(
-        "events/add/",
-        views.event_create,
-        name="event_create",
-    ),
+path(
+    "events/add/",
+    views.event_create,
+    name="event_create",
+),
 
-    path(
-        "events/<int:pk>/edit/",
-        views.event_update,
-        name="event_update",
-    ),
+path(
+    "events/<int:pk>/edit/",
+    views.event_update,
+    name="event_update",
+),
 
-    path(
-        "events/<int:pk>/delete/",
-        views.event_delete,
-        name="event_delete",
-    ),
+path(
+    "events/<int:pk>/delete/",
+    views.event_delete,
+    name="event_delete",
+),
+
+# RSVP
+
+path(
+    "events/<int:pk>/register/",
+    views.register_event,
+    name="register_event",
+),
+
+path(
+    "events/<int:pk>/unregister/",
+    views.unregister_event,
+    name="unregister_event",
+),
+
+path(
+    "my-events/",
+    views.my_events,
+    name="my_events",
+),
+
+path(
+    "events/<int:pk>/",
+    views.event_detail,
+    name="event_detail",
+),
+
 ]

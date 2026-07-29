@@ -16,6 +16,7 @@
 
     <!-- ================= NAVBAR ================= -->
     <nav class="bg-blue-600 shadow-lg">
+
         <div class="max-w-7xl mx-auto px-6">
 
             <div class="flex items-center justify-between h-16">
@@ -30,18 +31,32 @@
 
                 <div class="flex items-center">
 
+                    <!-- Dashboard -->
                     <a href="{% url 'dashboard' %}"
                        class="text-white hover:text-yellow-300"
                        style="margin-right:25px;">
                         Dashboard
                     </a>
 
+                    <!-- Events -->
                     <a href="{% url 'event_list' %}"
                        class="text-white hover:text-yellow-300"
                        style="margin-right:25px;">
                         Events
                     </a>
 
+                    <!-- Participant Menu -->
+                    {% if user|has_group:"Participant" %}
+
+                    <a href="{% url 'my_events' %}"
+                       class="text-white hover:text-yellow-300"
+                       style="margin-right:25px;">
+                        My Events
+                    </a>
+
+                    {% endif %}
+
+                    <!-- Admin Menu -->
                     {% if user.is_superuser or user|has_group:"Admin" %}
 
                     <a href="{% url 'category_list' %}"
@@ -56,14 +71,22 @@
                         Participants
                     </a>
 
+                    <a href="{% url 'user_list' %}"
+                       class="text-white hover:text-yellow-300"
+                       style="margin-right:25px;">
+                        Users
+                    </a>
+
                     {% endif %}
 
+                    <!-- Greeting -->
                     <span class="text-white"
                           style="margin-right:25px;">
                         Hello,
                         <strong>{{ user.first_name|default:user.username }}</strong>
                     </span>
 
+                    <!-- Logout -->
                     <a href="{% url 'logout' %}"
                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
                         Logout
@@ -93,6 +116,7 @@
             </div>
 
         </div>
+
     </nav>
 
     <!-- ================= CONTENT ================= -->

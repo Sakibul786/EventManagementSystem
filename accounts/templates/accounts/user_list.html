@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load permissions %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto">
+
+    <div class="flex justify-between items-center mb-8">
+
+        <h1 class="text-3xl font-bold">
+            User Management
+        </h1>
+
+    </div>
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="min-w-full">
+
+            <thead class="bg-gray-100">
+
+                <tr>
+                    <th class="px-6 py-4 text-left">Username</th>
+                    <th class="px-6 py-4 text-left">Name</th>
+                    <th class="px-6 py-4 text-left">Email</th>
+                    <th class="px-6 py-4 text-left">Role</th>
+                    <th class="px-6 py-4 text-center">Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for user in users %}
+
+                <tr class="border-t hover:bg-gray-50">
+
+                    <td class="px-6 py-4">
+                        {{ user.username }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ user.email }}
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {% if user.is_superuser %}
+
+                            <span class="font-semibold text-red-600">
+                                Superuser
+                            </span>
+
+                        {% else %}
+
+                            {% for group in user.groups.all %}
+
+                                <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                                    {{ group.name }}
+                                </span>
+
+                            {% empty %}
+
+                                <span class="text-gray-500">
+                                    No Role
+                                </span>
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="px-6 py-4 text-center">
+
+                        {% if request.user.is_superuser or request.user|has_group:"Admin" %}
+
+                            {% if not user.is_superuser %}
+
+                                <a href="{% url 'change_role' user.id %}"
+                                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                                    Change Role
+                                </a>
+
+                            {% else %}
+
+                                <span class="text-gray-500 font-medium">
+                                    Protected
+                                </span>
+
+                            {% endif %}
+
+                        {% elif request.user|has_group:"Organizer" %}
+
+                            <span class="text-gray-500 italic">
+                                View Only
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

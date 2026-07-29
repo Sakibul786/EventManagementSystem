@@ -6,17 +6,28 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from events.models import Event, Participant, Category
 
 
-# -----------------------------
-# Role Checking Functions
-# -----------------------------
+# ==========================================
+# Permission Functions
+# ==========================================
 
 def is_admin(user):
-    return user.is_superuser or user.groups.filter(name="Admin").exists()
+    return (
+        user.is_superuser
+        or user.groups.filter(name="Admin").exists()
+    )
 
 
-# -----------------------------
-# Dashboard
-# -----------------------------
+def is_admin_or_organizer(user):
+    return (
+        user.is_superuser
+        or user.groups.filter(name="Admin").exists()
+        or user.groups.filter(name="Organizer").exists()
+    )
+
+
+# ==========================================
+# Dashboard (All Logged-in Users)
+# ==========================================
 
 @login_required
 def dashboard(request):
@@ -64,9 +75,9 @@ def dashboard(request):
     )
 
 
-# -----------------------------
+# ==========================================
 # All Events
-# -----------------------------
+# ==========================================
 
 @login_required
 def dashboard_events(request):
@@ -87,12 +98,12 @@ def dashboard_events(request):
     )
 
 
-# -----------------------------
-# Categories (Admin Only)
-# -----------------------------
+# ==========================================
+# Categories (Admin + Organizer)
+# ==========================================
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def dashboard_categories(request):
 
     categories = Category.objects.order_by("name")
@@ -106,12 +117,12 @@ def dashboard_categories(request):
     )
 
 
-# -----------------------------
-# Participants (Admin Only)
-# -----------------------------
+# ==========================================
+# Participants (Admin + Organizer)
+# ==========================================
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def dashboard_participants(request):
 
     participants = Participant.objects.order_by("name")
@@ -125,9 +136,9 @@ def dashboard_participants(request):
     )
 
 
-# -----------------------------
+# ==========================================
 # Upcoming Events
-# -----------------------------
+# ==========================================
 
 @login_required
 def dashboard_upcoming(request):
@@ -151,9 +162,9 @@ def dashboard_upcoming(request):
     )
 
 
-# -----------------------------
+# ==========================================
 # Past Events
-# -----------------------------
+# ==========================================
 
 @login_required
 def dashboard_past(request):

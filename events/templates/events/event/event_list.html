@@ -42,7 +42,6 @@
             </div>
 
             <div>
-
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                     Category
                 </label>
@@ -59,9 +58,7 @@
                         {% if selected_category == category.id|stringformat:"s" %}
                         selected
                         {% endif %}>
-
                         {{ category.name }}
-
                     </option>
 
                     {% endfor %}
@@ -129,6 +126,7 @@
         <thead class="bg-gray-100">
 
             <tr>
+
                 <th class="px-6 py-4 text-left">Event</th>
                 <th class="px-6 py-4 text-left">Category</th>
                 <th class="px-6 py-4 text-left">Date</th>
@@ -136,9 +134,18 @@
                 <th class="px-6 py-4 text-left">Location</th>
                 <th class="px-6 py-4 text-left">Participants</th>
 
-                {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Organizer" %}
-                <th class="px-6 py-4 text-center">Actions</th>
+                {% if user|has_group:"Participant" %}
+                <th class="px-6 py-4 text-center">
+                    RSVP
+                </th>
                 {% endif %}
+
+                {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Organizer" %}
+                <th class="px-6 py-4 text-center">
+                    Actions
+                </th>
+                {% endif %}
+
             </tr>
 
         </thead>
@@ -149,27 +156,84 @@
 
             <tr class="border-t hover:bg-gray-50">
 
-                <td class="px-6 py-4">{{ event.name }}</td>
-                <td class="px-6 py-4">{{ event.category.name }}</td>
-                <td class="px-6 py-4">{{ event.date }}</td>
-                <td class="px-6 py-4">{{ event.time }}</td>
-                <td class="px-6 py-4">{{ event.location }}</td>
-                <td class="px-6 py-4">{{ event.participants.count }}</td>
+                <td class="px-6 py-4">
+                    <a href="{% url 'event_detail' event.id %}"
+                       class="text-blue-600 hover:text-blue-800 hover:underline font-semibold">
+                        {{ event.name }}
+                    </a>
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.category.name }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.date }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.time }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.location }}
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ event.participant_count }} / {{ event.capacity }}
+                </td>
+
+                {% if user|has_group:"Participant" %}
+
+                <td class="px-6 py-4 text-center">
+
+                    {% if request.user.participant_profile in event.participants.all %}
+
+                        <a href="{% url 'unregister_event' event.id %}"
+                           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                            Cancel
+                        </a>
+
+                    {% elif event.is_full %}
+
+                        <span class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                            Full
+                        </span>
+
+                    {% else %}
+
+                        <a href="{% url 'register_event' event.id %}"
+                           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                            Register
+                        </a>
+
+                    {% endif %}
+
+                </td>
+
+                {% endif %}
 
                 {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Organizer" %}
+
                 <td class="px-6 py-4 text-center">
 
                     <a href="{% url 'event_update' event.id %}"
-                       class="text-blue-600 hover:underline mr-3">
+                       class="text-blue-600 hover:underline mr-4">
                         Edit
                     </a>
 
                     <a href="{% url 'event_delete' event.id %}"
-                       class="text-red-600 hover:underline">
+                       class="text-red-600 hover:underline mr-4">
                         Delete
                     </a>
 
+                    <a href="{% url 'attendance_list' event.id %}"
+                       class="text-green-600 hover:underline">
+                        Attendance
+                    </a>
+
                 </td>
+
                 {% endif %}
 
             </tr>
@@ -178,9 +242,10 @@
 
             <tr>
 
-                <td colspan="7"
+                <td colspan="8"
                     class="text-center py-8 text-gray-500">
                     No events found.
+
                 </td>
 
             </tr>
