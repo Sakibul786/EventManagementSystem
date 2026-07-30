@@ -93,7 +93,10 @@ def event_create(request):
 
     if request.method == "POST":
 
-        form = EventForm(request.POST)
+        form = EventForm(
+            request.POST,
+            request.FILES,
+        )
 
         if form.is_valid():
 
@@ -136,6 +139,7 @@ def event_update(request, pk):
 
         form = EventForm(
             request.POST,
+            request.FILES,
             instance=event,
         )
 

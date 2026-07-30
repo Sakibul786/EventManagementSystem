@@ -45,7 +45,6 @@ class ParticipantForm(forms.ModelForm):
             ),
         }
 
-
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
@@ -82,6 +81,13 @@ class EventForm(forms.ModelForm):
             "location": forms.TextInput(
                 attrs={
                     "class": "w-full border border-gray-300 rounded-lg px-4 py-2"
+                }
+            ),
+
+            # NEW IMAGE FIELD
+            "image": forms.ClearableFileInput(
+                attrs={
+                    "class": "w-full border border-gray-300 rounded-lg px-4 py-2 bg-white"
                 }
             ),
 

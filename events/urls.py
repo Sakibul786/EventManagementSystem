@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 
@@ -99,58 +101,94 @@ urlpatterns = [
         name="participant_delete",
     ),
 
- # ==========================
-# Event
-# ==========================
+    # ==========================
+    # Event
+    # ==========================
 
-path(
-    "events/",
-    views.event_list,
-    name="event_list",
-),
+    path(
+        "events/",
+        views.event_list,
+        name="event_list",
+    ),
 
-path(
-    "events/add/",
-    views.event_create,
-    name="event_create",
-),
+    path(
+        "events/add/",
+        views.event_create,
+        name="event_create",
+    ),
 
-path(
-    "events/<int:pk>/edit/",
-    views.event_update,
-    name="event_update",
-),
+    path(
+        "events/<int:pk>/edit/",
+        views.event_update,
+        name="event_update",
+    ),
 
-path(
-    "events/<int:pk>/delete/",
-    views.event_delete,
-    name="event_delete",
-),
+    path(
+        "events/<int:pk>/delete/",
+        views.event_delete,
+        name="event_delete",
+    ),
 
-# RSVP
+    path(
+        "events/<int:pk>/",
+        views.event_detail,
+        name="event_detail",
+    ),
 
-path(
-    "events/<int:pk>/register/",
-    views.register_event,
-    name="register_event",
-),
+    # ==========================
+    # RSVP
+    # ==========================
 
-path(
-    "events/<int:pk>/unregister/",
-    views.unregister_event,
-    name="unregister_event",
-),
+    path(
+        "events/<int:pk>/register/",
+        views.register_event,
+        name="register_event",
+    ),
 
-path(
-    "my-events/",
-    views.my_events,
-    name="my_events",
-),
+    path(
+        "events/<int:pk>/unregister/",
+        views.unregister_event,
+        name="unregister_event",
+    ),
 
-path(
-    "events/<int:pk>/",
-    views.event_detail,
-    name="event_detail",
-),
+    path(
+        "my-events/",
+        views.my_events,
+        name="my_events",
+    ),
 
+    # ==========================
+    # Attendance
+    # ==========================
+
+    path(
+        "events/<int:event_id>/attendance/",
+        views.attendance_list,
+        name="attendance_list",
+    ),
+
+    path(
+        "attendance/<int:attendance_id>/toggle/",
+        views.toggle_attendance,
+        name="toggle_attendance",
+    ),
+
+    # ==========================
+    # Attendance Export
+    # ==========================
+
+    path(
+        "events/<int:event_id>/attendance/pdf/",
+        views.export_attendance_pdf,
+        name="export_attendance_pdf",
+    ),
+
+    path(
+        "events/<int:event_id>/attendance/excel/",
+        views.export_attendance_excel,
+        name="export_attendance_excel",
+    ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -119,14 +119,14 @@
 
 <!-- Events Table -->
 
-<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+<div class="bg-white rounded-xl shadow-lg overflow-x-auto">
 
     <table class="min-w-full">
 
         <thead class="bg-gray-100">
 
             <tr>
-
+                <th class="px-6 py-4 text-center">Image</th>
                 <th class="px-6 py-4 text-left">Event</th>
                 <th class="px-6 py-4 text-left">Category</th>
                 <th class="px-6 py-4 text-left">Date</th>
@@ -156,12 +156,31 @@
 
             <tr class="border-t hover:bg-gray-50">
 
-                <td class="px-6 py-4">
-                    <a href="{% url 'event_detail' event.id %}"
-                       class="text-blue-600 hover:text-blue-800 hover:underline font-semibold">
-                        {{ event.name }}
-                    </a>
-                </td>
+                <!-- Event Image -->
+<td class="px-6 py-4 text-center">
+
+    {% if event.image %}
+
+        <img src="{{ event.image.url }}"
+             alt="{{ event.name }}"
+             class="w-16 h-16 rounded-lg object-cover border shadow mx-auto">
+
+    {% else %}
+
+        <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center mx-auto">
+            <span class="text-gray-400 text-xs">
+                No Image
+            </span>
+        </div>
+
+    {% endif %}
+
+</td>
+
+<!-- Event Name -->
+<td class="px-6 py-4 font-semibold text-gray-800">
+    {{ event.name }}
+</td>
 
                 <td class="px-6 py-4">
                     {{ event.category.name }}
@@ -217,23 +236,31 @@
 
                 <td class="px-6 py-4 text-center">
 
-                    <a href="{% url 'event_update' event.id %}"
-                       class="text-blue-600 hover:underline mr-4">
-                        Edit
-                    </a>
+    <div class="flex flex-wrap justify-center gap-2">
 
-                    <a href="{% url 'event_delete' event.id %}"
-                       class="text-red-600 hover:underline mr-4">
-                        Delete
-                    </a>
+        <a href="{% url 'event_detail' event.id %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+            Details
+        </a>
 
-                    <a href="{% url 'attendance_list' event.id %}"
-                       class="text-green-600 hover:underline">
-                        Attendance
-                    </a>
+        <a href="{% url 'attendance_list' event.id %}"
+           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+            Attendance
+        </a>
 
-                </td>
+        <a href="{% url 'event_update' event.id %}"
+           class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+            Edit
+        </a>
 
+        <a href="{% url 'event_delete' event.id %}"
+           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                    Delete
+                </a>
+
+            </div>
+
+        </td>
                 {% endif %}
 
             </tr>
@@ -242,7 +269,7 @@
 
             <tr>
 
-                <td colspan="8"
+                <td colspan="9"
                     class="text-center py-8 text-gray-500">
                     No events found.
 

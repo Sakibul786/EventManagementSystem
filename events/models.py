@@ -59,7 +59,12 @@ class Event(models.Model):
         max_length=200,
     )
 
-    # NEW
+    image = models.ImageField(
+    upload_to="event_images/",
+    blank=True,
+    null=True,
+    )
+
     capacity = models.PositiveIntegerField(
         default=50,
         help_text="Maximum number of participants allowed.",
@@ -94,3 +99,33 @@ class Event(models.Model):
     @property
     def is_full(self):
         return self.participant_count >= self.capacity
+
+
+class Attendance(models.Model):
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="attendance_records",
+    )
+
+    participant = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        related_name="attendance_records",
+    )
+
+    is_present = models.BooleanField(
+        default=False,
+    )
+
+    marked_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = ["event", "participant"]
+        unique_together = ("event", "participant")
+
+    def __str__(self):
+        status = "Present" if self.is_present else "Absent"
+        return f"{self.participant.name} - {self.event.name} ({status})"

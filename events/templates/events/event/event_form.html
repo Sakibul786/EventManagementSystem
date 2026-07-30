@@ -17,7 +17,9 @@
         </div>
 
         <!-- Form -->
-        <form method="POST" class="p-8">
+        <form method="POST"
+        enctype="multipart/form-data"
+        class="p-8">
 
             {% csrf_token %}
 
@@ -70,7 +72,40 @@
                     </label>
                     {{ form.location }}
                 </div>
+                
+                <!-- Capacity -->
+                <div>
 
+                    <label class="block font-semibold mb-2">
+                        Capacity
+                    </label>
+
+                    {{ form.capacity }}
+
+                </div>
+
+                <!-- Event Image -->
+                <div class="md:col-span-2">
+
+                    <label class="block font-semibold mb-2">
+                        Event Image
+                    </label>
+
+                    {{ form.image }}
+
+                    {% if form.instance.image %}
+                        <div class="mt-4">
+                            <img src="{{ form.instance.image.url }}"
+                                alt="Current Image"
+                                class="w-64 h-40 object-cover rounded-lg border shadow">
+                        </div>
+                    {% endif %}
+
+                    <p class="text-sm text-gray-500 mt-2">
+                        Upload a banner image for this event.
+                    </p>
+
+                </div>
                 <!-- Participants -->
                 <div class="md:col-span-2">
                     <label class="block font-semibold mb-2">

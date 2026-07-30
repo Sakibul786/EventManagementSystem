@@ -139,3 +139,6 @@ EMAIL_HOST_PASSWORD = "lpuy qxzz xtkx uxxu"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SITE_ID = 1
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
