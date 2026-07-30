@@ -1,49 +1,237 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Login{% endblock %}
+<head>
 
-{% block content %}
+    <meta charset="UTF-8">
 
-<div class="max-w-md mx-auto mt-12 bg-white shadow-lg rounded-xl p-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <h1 class="text-3xl font-bold text-center mb-6">
-        Login
-    </h1>
+    <title>Login | Event Management</title>
 
-    <form method="POST">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        {% csrf_token %}
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-        <div class="space-y-4">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
-            {{ form.as_p }}
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        body{
+            font-family:Inter,sans-serif;
+        }
+
+        .heading{
+            font-family:'Cormorant Garamond',serif;
+        }
+
+    </style>
+
+</head>
+
+<body class="bg-gray-100">
+
+<div class="min-h-screen grid lg:grid-cols-2">
+
+    <!-- LEFT -->
+
+    <div class="hidden lg:flex relative bg-black overflow-hidden">
+
+        <!-- Background -->
+
+       <img
+    src="{% static 'images/login-bg.jpg' %}"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+    alt="Background">
+
+        <div class="absolute inset-0 bg-black/60"></div>
+
+        <div class="relative z-10 flex flex-col justify-between p-16 w-full">
+
+            <div>
+
+                <h2 class="text-3xl font-bold text-white">
+
+                    EventHub
+
+                </h2>
+
+            </div>
+
+            <div>
+
+                <div class="w-16 h-1 bg-yellow-400 mb-8 rounded-full"></div>
+
+                <h1 class="heading text-7xl leading-tight text-white">
+
+                    Event
+
+                    <br>
+
+                    Management
+
+                </h1>
+
+                <p class="mt-8 text-xl text-gray-300 max-w-md leading-9">
+
+                    A workspace built for clarity.
+                    Plan, manage and participate in events
+                    with confidence.
+
+                </p>
+
+            </div>
 
         </div>
 
-        <button
-            type="submit"
-            class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg">
+    </div>
 
-            Login
+    <!-- RIGHT -->
 
-        </button>
+    <div class="bg-white flex items-center justify-center px-8">
 
-    </form>
+        <div class="w-full max-w-md">
 
-    <p class="mt-6 text-center">
+            <!-- Tabs -->
 
-        Don't have an account?
+            <div class="flex gap-10 border-b mb-12">
 
-        <a
-            href="{% url 'signup' %}"
-            class="text-blue-600 hover:underline">
+                <span class="pb-4 border-b-2 border-black font-semibold">
 
-            Sign Up
+                    SIGN IN
 
-        </a>
+                </span>
 
-    </p>
+                <a href="{% url 'signup' %}"
+                   class="pb-4 text-gray-400 hover:text-black transition">
+
+                    CREATE ACCOUNT
+
+                </a>
+
+            </div>
+
+            <h1 class="heading text-6xl text-gray-900">
+
+                Welcome back.
+
+            </h1>
+
+            <p class="text-gray-500 mt-3 text-lg">
+
+                Sign in to your account to continue.
+
+            </p>
+
+            {% if form.errors %}
+
+            <div class="mt-6 bg-red-50 border border-red-200 rounded-xl p-4 text-red-700">
+
+                Invalid email or password.
+
+            </div>
+
+            {% endif %}
+
+            <form method="POST"
+                  class="mt-10 space-y-6">
+
+                {% csrf_token %}
+
+                <div>
+
+                    <label class="block uppercase tracking-widest text-sm mb-3">
+
+                        Username
+
+                    </label>
+
+                    {{ form.username }}
+
+                </div>
+
+                <div>
+
+                    <label class="block uppercase tracking-widest text-sm mb-3">
+
+                        Password
+
+                    </label>
+
+                    {{ form.password }}
+
+                </div>
+                                
+                <button
+                    type="submit"
+                    class="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl text-lg font-semibold transition duration-300">
+
+                    Sign In →
+
+                </button>
+
+            </form>
+
+            <div class="mt-8 text-center text-gray-500">
+
+                Don't have an account?
+
+                <a href="{% url 'signup' %}"
+                   class="text-black font-semibold hover:underline">
+
+                    Create Account
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-{% endblock %}
+<style>
+
+input[type="text"],
+input[type="email"],
+input[type="password"]{
+
+    width:100%;
+    padding:16px 18px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    outline:none;
+    transition:.3s;
+    font-size:16px;
+
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus{
+
+    border-color:#000;
+    box-shadow:0 0 0 3px rgba(0,0,0,.08);
+
+}
+
+label{
+
+    font-weight:600;
+
+}
+
+</style>
+
+</body>
+
+</html>
