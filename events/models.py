@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import datetime
 
 
 class Category(models.Model):
@@ -100,7 +102,13 @@ class Event(models.Model):
     def is_full(self):
         return self.participant_count >= self.capacity
 
-
+    @property
+    def registration_open(self):
+        event_datetime = timezone.make_aware(
+            datetime.combine(self.date, self.time)
+        )
+        return timezone.now() < event_datetime
+    
 class Attendance(models.Model):
     event = models.ForeignKey(
         Event,

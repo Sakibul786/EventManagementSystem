@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,8 +12,11 @@
 
     <title>Login | Event Management</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind (Compiled CSS) -->
+    <link rel="stylesheet"
+          href="{% static 'css/output.css' %}">
 
+    <!-- Google Fonts -->
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 
@@ -26,7 +30,7 @@
     <style>
 
         body{
-            font-family:Inter,sans-serif;
+            font-family:'Inter',sans-serif;
         }
 
         .heading{
@@ -41,20 +45,22 @@
 
 <div class="min-h-screen grid lg:grid-cols-2">
 
-    <!-- LEFT -->
+    <!-- ================= LEFT ================= -->
 
     <div class="hidden lg:flex relative bg-black overflow-hidden">
 
-        <!-- Background -->
+        <!-- Background Image -->
 
-       <img
-    src="{% static 'images/login-bg.jpg' %}"
-    class="absolute inset-0 w-full h-full object-cover opacity-40"
-    alt="Background">
+        <img
+            src="{% static 'images/login-bg.jpg' %}"
+            class="absolute inset-0 w-full h-full object-cover opacity-40"
+            alt="Background">
 
         <div class="absolute inset-0 bg-black/60"></div>
 
         <div class="relative z-10 flex flex-col justify-between p-16 w-full">
+
+            <!-- Logo -->
 
             <div>
 
@@ -65,6 +71,8 @@
                 </h2>
 
             </div>
+
+            <!-- Hero -->
 
             <div>
 
@@ -94,7 +102,7 @@
 
     </div>
 
-    <!-- RIGHT -->
+    <!-- ================= RIGHT ================= -->
 
     <div class="bg-white flex items-center justify-center px-8">
 
@@ -130,74 +138,127 @@
                 Sign in to your account to continue.
 
             </p>
+            <!-- ================= Django Messages ================= -->
 
-            {% if form.errors %}
+{% if messages %}
 
-            <div class="mt-6 bg-red-50 border border-red-200 rounded-xl p-4 text-red-700">
+<div class="mt-6 space-y-3">
 
-                Invalid email or password.
+    {% for message in messages %}
 
-            </div>
+    <div class="rounded-xl p-4 text-sm
+        {% if message.tags == 'success' %}
+            bg-green-50 border border-green-200 text-green-700
+        {% elif message.tags == 'error' %}
+            bg-red-50 border border-red-200 text-red-700
+        {% elif message.tags == 'warning' %}
+            bg-yellow-50 border border-yellow-200 text-yellow-700
+        {% else %}
+            bg-blue-50 border border-blue-200 text-blue-700
+        {% endif %}">
 
-            {% endif %}
+        {{ message }}
 
-            <form method="POST"
-                  class="mt-10 space-y-6">
+    </div>
 
-                {% csrf_token %}
+    {% endfor %}
 
-                <div>
+</div>
 
-                    <label class="block uppercase tracking-widest text-sm mb-3">
+{% endif %}
 
-                        Username
+<!-- Form Errors -->
 
-                    </label>
+{% if form.errors %}
 
-                    {{ form.username }}
+<div class="mt-6 bg-red-50 border border-red-200 rounded-xl p-4 text-red-700">
 
-                </div>
+    Invalid username or password.
 
-                <div>
+</div>
 
-                    <label class="block uppercase tracking-widest text-sm mb-3">
+{% endif %}
 
-                        Password
+<!-- Login Form -->
 
-                    </label>
+<form method="POST"
+      class="mt-10 space-y-6">
 
-                    {{ form.password }}
+    {% csrf_token %}
 
-                </div>
-                                
-                <button
-                    type="submit"
-                    class="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl text-lg font-semibold transition duration-300">
+    <div>
 
-                    Sign In →
+        <label class="block uppercase tracking-widest text-sm mb-3">
 
-                </button>
+            Username
 
-            </form>
+        </label>
 
-            <div class="mt-8 text-center text-gray-500">
+        {{ form.username }}
 
-                Don't have an account?
+    </div>
 
-                <a href="{% url 'signup' %}"
-                   class="text-black font-semibold hover:underline">
+    <div>
 
-                    Create Account
+        <label class="block uppercase tracking-widest text-sm mb-3">
 
-                </a>
+            Password
 
-            </div>
+        </label>
 
-        </div>
+        {{ form.password }}
+
+    </div>
+
+    <div class="flex items-center justify-between">
+
+        <label class="flex items-center gap-2 text-sm text-gray-600">
+
+            <input type="checkbox"
+                   class="rounded border-gray-300">
+
+            Remember me
+
+        </label>
+
+        <a href="#"
+           class="text-sm text-black hover:underline">
+
+            Forgot Password?
+
+        </a>
+
+    </div>
+
+    <button
+        type="submit"
+        class="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl text-lg font-semibold transition duration-300">
+
+        Sign In →
+
+    </button>
+
+</form>
+
+<div class="mt-8 text-center text-gray-500">
+
+    Don't have an account?
+
+    <a href="{% url 'signup' %}"
+       class="text-black font-semibold hover:underline">
+
+        Create Account
+
+    </a>
+
+</div>
+</div>
 
     </div>
 
 </div>
+
+<!-- ================= Custom Input Styling ================= -->
 
 <style>
 
@@ -212,6 +273,7 @@ input[type="password"]{
     outline:none;
     transition:.3s;
     font-size:16px;
+    background:#fff;
 
 }
 
@@ -227,6 +289,18 @@ input[type="password"]:focus{
 label{
 
     font-weight:600;
+
+}
+
+button{
+
+    cursor:pointer;
+
+}
+
+::placeholder{
+
+    color:#9ca3af;
 
 }
 

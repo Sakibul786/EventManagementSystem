@@ -5,144 +5,299 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Event Management System{% endblock %}</title>
 
-    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            EventHub
+        {% endblock %}
+    </title>
+
+    <!-- Tailwind -->
+
+    <link rel="stylesheet"
+          href="{% static 'css/output.css' %}">
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        body{
+
+            font-family:'Inter',sans-serif;
+
+        }
+
+        .heading{
+
+            font-family:'Cormorant Garamond',serif;
+
+        }
+
+    </style>
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-100">
 
-    <!-- ================= NAVBAR ================= -->
-    <nav class="bg-blue-600 shadow-lg">
+<div class="flex min-h-screen">
 
-        <div class="max-w-7xl mx-auto px-6">
+    <!-- ================= SIDEBAR ================= -->
 
-            <div class="flex items-center justify-between h-16">
+    <aside class="w-64 bg-gray-900 text-white flex flex-col">
 
-                <!-- Logo -->
-                <a href="{% url 'dashboard' %}"
-                   class="text-3xl font-bold text-white">
-                    Event Management System
-                </a>
+        <!-- Logo -->
 
-                {% if user.is_authenticated %}
+        <div class="px-8 py-8 border-b border-gray-800">
 
-                <div class="flex items-center">
+            <a href="{% url 'dashboard' %}"
+               class="heading text-4xl font-bold">
 
-                    <!-- Dashboard -->
-                    <a href="{% url 'dashboard' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:25px;">
-                        Dashboard
-                    </a>
+                EventHub
 
-                    <!-- Events -->
-                    <a href="{% url 'event_list' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:25px;">
-                        Events
-                    </a>
+            </a>
 
-                    <!-- Participant Menu -->
-                    {% if user|has_group:"Participant" %}
+            <p class="text-gray-400 text-sm mt-2">
 
-                    <a href="{% url 'my_events' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:25px;">
-                        My Events
-                    </a>
+                Event Management System
 
-                    {% endif %}
+            </p>
 
-                    <!-- Admin Menu -->
-                    {% if user.is_superuser or user|has_group:"Admin" %}
+        </div>
+        <!-- ================= Navigation ================= -->
 
-                    <a href="{% url 'category_list' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:25px;">
-                        Categories
-                    </a>
+<nav class="flex-1 px-4 py-6 overflow-y-auto">
 
-                    <a href="{% url 'participant_list' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:25px;">
-                        Participants
-                    </a>
+    <div class="space-y-2">
 
-                    <a href="{% url 'user_list' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:25px;">
-                        Users
-                    </a>
+        <!-- Dashboard -->
 
-                    {% endif %}
+        <a href="{% url 'dashboard' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}sidebar-link-active{% endif %}">
 
-                    <!-- Greeting -->
-                    <span class="text-white"
-                          style="margin-right:25px;">
-                        Hello,
-                        <strong>{{ user.first_name|default:user.username }}</strong>
-                    </span>
+            <span>🏠</span>
 
-                    <!-- Logout -->
-                    <a href="{% url 'logout' %}"
-                       class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                        Logout
-                    </a>
+            <span>Dashboard</span>
 
-                </div>
+        </a>
 
-                {% else %}
+        <!-- Events -->
+<a href="{% url 'event_list' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'event_list' %}sidebar-link-active{% endif %}">
 
-                <div class="flex items-center">
+            <span>📅</span>
 
-                    <a href="{% url 'login' %}"
-                       class="text-white hover:text-yellow-300"
-                       style="margin-right:20px;">
-                        Login
-                    </a>
+            <span>Events</span>
 
-                    <a href="{% url 'signup' %}"
-                       class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-                        Sign Up
-                    </a>
+        </a>
 
-                </div>
+        <!-- My Events (Participant) -->
 
-                {% endif %}
+        {% if user|has_group:"Participant" %}
 
-            </div>
+       <a href="{% url 'my_events' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'my_events' %}sidebar-link-active{% endif %}">
+
+            <span>🎟️</span>
+
+            <span>My Events</span>
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+    <!-- ================= Admin Section ================= -->
+
+    {% if user.is_superuser or user|has_group:"Admin" %}
+
+    <div class="mt-10">
+
+        <p class="px-4 mb-3 text-xs uppercase tracking-widest text-gray-500">
+
+            Administration
+
+        </p>
+
+        <div class="space-y-2">
+
+            <a href="{% url 'category_list' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'category_list' %}sidebar-link-active{% endif %}">
+
+                <span>🏷️</span>
+
+                <span>Categories</span>
+
+            </a>
+
+          <a href="{% url 'participant_list' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'participant_list' %}sidebar-link-active{% endif %}">
+
+                <span>👥</span>
+
+                <span>Participants</span>
+
+            </a>
+
+            {% if perms.accounts.view_user or user.is_superuser %}
+
+           <a href="{% url 'user_list' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'user_list' %}sidebar-link-active{% endif %}">
+
+                <span>👤</span>
+
+                <span>Users</span>
+
+            </a>
+
+            {% endif %}
 
         </div>
 
-    </nav>
+    </div>
 
-    <!-- ================= CONTENT ================= -->
+    {% endif %}
 
-    <div class="max-w-7xl mx-auto mt-10 px-6">
+</nav>
+<!-- ================= Footer ================= -->
+
+<div class="border-t border-gray-800 p-6">
+
+    <p class="text-xs uppercase tracking-widest text-gray-500">
+
+        Logged in as
+
+    </p>
+
+    <h3 class="mt-2 font-semibold text-lg">
+
+        {{ user.get_full_name|default:user.username }}
+
+    </h3>
+
+    <p class="text-sm text-gray-400 mt-1">
+
+        {% if user.is_superuser %}
+            Superuser
+        {% elif user|has_group:"Admin" %}
+            Administrator
+        {% elif user|has_group:"Organizer" %}
+            Organizer
+        {% else %}
+            Participant
+        {% endif %}
+    </p>
+
+    <a href="{% url 'logout' %}"
+       class="btn-primary w-full mt-6 block text-center">
+
+        Logout
+
+    </a>
+
+</div>
+
+</aside>
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="flex-1 flex flex-col min-h-screen">
+
+    <!-- ================= HEADER ================= -->
+    <header class="bg-white border-b border-gray-200 h-20 flex items-center justify-between px-6">
+    
+
+        <!-- Left -->
+
+        <div>
+
+           <h1 class="heading text-4xl font-bold text-gray-900 text-left -ml-4">
+
+                {% block page_title %}
+                    Dashboard
+                {% endblock %}
+
+            </h1>
+
+            <p class="text-gray-500 mt-1 text-sm">
+
+                Welcome back,
+                <span class="font-medium">
+                    {{ user.first_name|default:user.username }}
+                </span>
+
+            </p>
+
+        </div>
+
+        <!-- Right -->
+
+      <div class="flex items-center gap-5">
+
+    <div class="text-right">
+
+        <p class="font-semibold text-gray-900">
+
+            {{ user.get_full_name|default:user.username }}
+
+        </p>
+
+        <p class="text-sm text-gray-500">
+
+            {% if user.is_superuser %}
+                Superuser
+            {% elif user|has_group:"Admin" %}
+                Administrator
+            {% elif user|has_group:"Organizer" %}
+                Organizer
+            {% else %}
+                Participant
+            {% endif %}
+
+        </p>
+
+    </div>
+
+    <div class="h-11 w-11 rounded-full bg-black text-white flex items-center justify-center font-bold">
+
+        {{ user.username|first|upper }}
+
+    </div>
+
+</div>
+
+    </header>
+
+    <!-- ================= PAGE CONTENT ================= -->
+
+    <main class="flex-1 p-8">
+
+        <!-- Flash Messages -->
 
         {% if messages %}
 
-            <div class="mb-6">
+            <div class="mb-6 space-y-3">
 
                 {% for message in messages %}
 
-                    <div class="
-                        p-4 mb-3 rounded border
+                    <div class="rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-green-700 shadow-sm">
 
-                        {% if message.tags == 'success' %}
-                            bg-green-100 border-green-400 text-green-800
-                        {% elif message.tags == 'error' %}
-                            bg-red-100 border-red-400 text-red-800
-                        {% elif message.tags == 'warning' %}
-                            bg-yellow-100 border-yellow-400 text-yellow-800
-                        {% else %}
-                            bg-blue-100 border-blue-400 text-blue-800
-                        {% endif %}
-                    ">
                         {{ message }}
+
                     </div>
 
                 {% endfor %}
@@ -154,7 +309,11 @@
         {% block content %}
         {% endblock %}
 
-    </div>
+    </main>
+
+</div>
+
+</div>
 
 </body>
 

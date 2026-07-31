@@ -135,7 +135,7 @@
                 <th class="px-6 py-4 text-left">Participants</th>
 
                 {% if user|has_group:"Participant" %}
-                <th class="px-6 py-4 text-center">
+                <th class="px-6 py-4 text-center w-56">
                     RSVP
                 </th>
                 {% endif %}
@@ -204,31 +204,38 @@
 
                 {% if user|has_group:"Participant" %}
 
-                <td class="px-6 py-4 text-center">
+             <td class="px-6 py-4 text-center">
 
-                    {% if request.user.participant_profile in event.participants.all %}
+    {% if request.user.participant_profile in event.participants.all %}
 
-                        <a href="{% url 'unregister_event' event.id %}"
-                           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                            Cancel
-                        </a>
+        <a href="{% url 'unregister_event' event.id %}"
+           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+            Cancel
+        </a>
 
-                    {% elif event.is_full %}
+    {% elif not event.registration_open %}
 
-                        <span class="bg-gray-500 text-white px-4 py-2 rounded-lg">
-                            Full
-                        </span>
+        <span class="text-gray-500">
+            Registration Closed
+        </span>
 
-                    {% else %}
+    {% elif event.is_full %}
 
-                        <a href="{% url 'register_event' event.id %}"
-                           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                            Register
-                        </a>
+        <span class="text-gray-500">
+            Full
+        </span>
 
-                    {% endif %}
+    {% else %}
 
-                </td>
+        <a href="{% url 'register_event' event.id %}"
+           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+            Register
+        </a>
+
+    {% endif %}
+
+</td>
+                
 
                 {% endif %}
 

@@ -219,6 +219,16 @@ def register_event(request, pk):
         user=request.user,
     )
 
+    # Registration Closed
+    if not event.registration_open:
+
+        messages.error(
+            request,
+            "Registration for this event has closed."
+        )
+
+        return redirect("event_detail", pk=event.pk)
+
     # Already registered
     if participant in event.participants.all():
 
