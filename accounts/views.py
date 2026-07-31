@@ -274,25 +274,39 @@ def change_role(request, user_id):
         # Remove existing groups
         user.groups.clear()
 
-        # Add new group
+        # Add selected group
         group, created = Group.objects.get_or_create(
             name=role
         )
+
         user.groups.add(group)
 
-        # Create Participant profile if assigning Participant role
+        # Create or update Participant profile
         if role == "Participant":
 
-            Participant.objects.get_or_create(
-                user=user,
-                defaults={
-                    "name": (
+            participant = Participant.objects.filter(
+                email=user.email
+            ).first()
+
+            if participant:
+
+                participant.user = user
+                participant.name = (
+                    f"{user.first_name} {user.last_name}".strip()
+                    or user.username
+                )
+                participant.save()
+
+            else:
+
+                Participant.objects.create(
+                    user=user,
+                    name=(
                         f"{user.first_name} {user.last_name}".strip()
                         or user.username
                     ),
-                    "email": user.email,
-                },
-            )
+                    email=user.email,
+                )
 
         messages.success(
             request,

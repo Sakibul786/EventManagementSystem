@@ -4,6 +4,7 @@ from django.db.models import Count
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from events.models import Event, Participant, Category
+from django.db.models import Count, Q
 
 
 # ==========================================
@@ -32,7 +33,8 @@ def is_admin_or_organizer(user):
 @login_required
 def dashboard(request):
 
-    today = timezone.localdate()
+    now = timezone.localtime()
+    today = now.date()
 
     total_events = Event.objects.count()
 
@@ -45,11 +47,13 @@ def dashboard(request):
     )["total"]
 
     upcoming_events = Event.objects.filter(
-        date__gt=today
+        Q(date__gt=today) |
+        Q(date=today, time__gt=now.time())
     ).count()
 
     past_events = Event.objects.filter(
-        date__lt=today
+        Q(date__lt=today) |
+        Q(date=today, time__lt=now.time())
     ).count()
 
     today_events = (
