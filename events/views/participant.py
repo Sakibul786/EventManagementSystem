@@ -16,13 +16,18 @@ def is_admin(user):
         or user.groups.filter(name="Admin").exists()
     )
 
-
+def is_admin_or_organizer(user):
+    return (
+        user.is_superuser
+        or user.groups.filter(name="Admin").exists()
+        or user.groups.filter(name="Organizer").exists()
+    )
 # -----------------------------
 # Participant List
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def participant_list(request):
 
     participants = Participant.objects.all()
@@ -41,7 +46,7 @@ def participant_list(request):
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def participant_create(request):
 
     if request.method == "POST":
@@ -77,7 +82,7 @@ def participant_create(request):
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def participant_update(request, pk):
 
     participant = get_object_or_404(
@@ -123,7 +128,7 @@ def participant_update(request, pk):
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def participant_delete(request, pk):
 
     participant = get_object_or_404(

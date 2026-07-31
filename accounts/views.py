@@ -313,3 +313,52 @@ def change_role(request, user_id):
             "groups": groups,
         },
     )
+@login_required
+@user_passes_test(is_admin)
+def delete_user(request, user_id):
+
+    user = get_object_or_404(
+        User,
+        pk=user_id,
+    )
+
+    # Prevent deleting yourself
+    if user == request.user:
+
+        messages.error(
+            request,
+            "You cannot delete your own account."
+        )
+
+        return redirect("user_list")
+
+    # Prevent deleting superusers
+    if user.is_superuser:
+
+        messages.error(
+            request,
+            "Superuser accounts cannot be deleted."
+        )
+
+        return redirect("user_list")
+
+    if request.method == "POST":
+
+        username = user.username
+
+        user.delete()
+
+        messages.success(
+            request,
+            f"User '{username}' has been deleted successfully."
+        )
+
+        return redirect("user_list")
+
+    return render(
+        request,
+        "accounts/delete_user.html",
+        {
+            "selected_user": user,
+        },
+    )

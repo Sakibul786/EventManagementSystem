@@ -81,20 +81,70 @@
 
                         {% if request.user.is_superuser or request.user|has_group:"Admin" %}
 
-                            {% if not user.is_superuser %}
+                           {% if not user.is_superuser %}
 
-                                <a href="{% url 'change_role' user.id %}"
-                                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                                    Change Role
-                                </a>
+<div class="flex items-center justify-center gap-3">
 
-                            {% else %}
+    <a href="{% url 'change_role' user.id %}"
+       class="inline-flex items-center justify-center
+              h-10 min-w-[120px]
+              px-5
+              rounded-2xl
+              border border-gray-300
+              bg-white
+              text-gray-800
+              text-sm font-semibold
+              shadow-sm
+              hover:bg-black
+              hover:text-white
+              hover:border-black
+              hover:shadow-lg
+              transition-all duration-300">
 
-                                <span class="text-gray-500 font-medium">
-                                    Protected
-                                </span>
+        Change Role
 
-                            {% endif %}
+    </a>
+
+    {% if user != request.user %}
+
+    <a href="{% url 'delete_user' user.id %}"
+       class="inline-flex items-center justify-center
+              h-10 min-w-[90px]
+              px-5
+              rounded-2xl
+              border border-red-200
+              bg-red-50
+              text-red-600
+              text-sm font-semibold
+              shadow-sm
+              hover:bg-red-600
+              hover:text-white
+              hover:border-red-600
+              hover:shadow-lg
+              transition-all duration-300">
+
+        Delete
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% else %}
+
+  <span class="inline-flex items-center
+             px-4 py-2
+             rounded-full
+             bg-gray-100
+             border border-gray-200
+             text-gray-600
+             text-sm
+             font-medium">
+
+
+</span>
+{% endif %}
 
                         {% elif request.user|has_group:"Organizer" %}
 

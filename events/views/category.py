@@ -15,14 +15,19 @@ def is_admin(user):
         user.is_superuser
         or user.groups.filter(name="Admin").exists()
     )
-
+def is_admin_or_organizer(user):
+    return (
+        user.is_superuser
+        or user.groups.filter(name="Admin").exists()
+        or user.groups.filter(name="Organizer").exists()
+    )
 
 # -----------------------------
 # Category List
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def category_list(request):
 
     categories = Category.objects.all()
@@ -41,7 +46,7 @@ def category_list(request):
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def category_create(request):
 
     if request.method == "POST":
@@ -77,7 +82,7 @@ def category_create(request):
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def category_update(request, pk):
 
     category = get_object_or_404(
@@ -123,7 +128,7 @@ def category_update(request, pk):
 # -----------------------------
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(is_admin_or_organizer)
 def category_delete(request, pk):
 
     category = get_object_or_404(

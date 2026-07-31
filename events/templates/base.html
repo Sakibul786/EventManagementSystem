@@ -124,7 +124,7 @@
 
     <!-- ================= Admin Section ================= -->
 
-    {% if user.is_superuser or user|has_group:"Admin" %}
+   {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Organizer" %}
 
     <div class="mt-10">
 
@@ -153,6 +153,9 @@
                 <span>Participants</span>
 
             </a>
+    {% endif %}
+    
+    {% if user.is_superuser or user|has_group:"Admin" %}
 
             {% if perms.accounts.view_user or user.is_superuser %}
 
