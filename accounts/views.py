@@ -34,8 +34,8 @@ def signup(request):
 
             user = form.save(commit=False)
 
-            # User cannot login until email verification
-            user.is_active = False
+            # Activate immediately (no email verification)
+            user.is_active = True
             user.save()
 
             # Create Participant Profile
@@ -51,33 +51,9 @@ def signup(request):
             )
             user.groups.add(participant_group)
 
-            current_site = get_current_site(request)
-
-            mail_subject = "Activate your Event Management System account"
-
-            message = render_to_string(
-                "accounts/account_activation_email.html",
-                {
-                    "user": user,
-                    "domain": current_site.domain,
-                    "uid": urlsafe_base64_encode(
-                        force_bytes(user.pk)
-                    ),
-                    "token": account_activation_token.make_token(user),
-                },
-            )
-
-            email = EmailMessage(
-                mail_subject,
-                message,
-                to=[user.email],
-            )
-
-            email.send()
-
             messages.success(
                 request,
-                "Registration successful! Please check your email to activate your account."
+                "Registration successful! You can now log in."
             )
 
             return redirect("login")
@@ -93,7 +69,6 @@ def signup(request):
             "form": form,
         },
     )
-
 
 # ==========================================
 # Account Activation
