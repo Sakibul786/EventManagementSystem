@@ -14,6 +14,7 @@ ALLOWED_HOSTS = [
     for host in os.getenv("ALLOWED_HOSTS", "").split(",")
     if host.strip()
 ]
+print("ALLOWED_HOSTS =", ALLOWED_HOSTS)
 
 # Application definition
 
