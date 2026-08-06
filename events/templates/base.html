@@ -202,19 +202,17 @@
     </p>
 
     <!-- My Profile -->
-    {% if user|has_group:"Participant" %}
+  {% if user|has_group:"Participant" or user|has_group:"Organizer" %}
 
-    <a href="{% url 'profile' %}"
-    class="sidebar-link {% if request.resolver_match.url_name == 'profile' %}sidebar-link-active{% endif %}">
+<a href="{% url 'profile' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'profile' %}sidebar-link-active{% endif %}">
 
-        <span>👤</span>
+    <span>👤</span>
+    <span>My Profile</span>
 
-        <span>My Profile</span>
+</a>
 
-    </a>
-
-     {% endif %}
-
+{% endif %}
     <!-- Logout -->
     <a href="{% url 'logout' %}"
        class="btn-primary w-full mt-3 block text-center">

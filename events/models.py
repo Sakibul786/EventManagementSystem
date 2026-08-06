@@ -86,13 +86,13 @@ class Event(models.Model):
     )
 
     image = models.ImageField(
-    upload_to="event_images/",
-    blank=True,
-    null=True,
+        upload_to="event_images/",
+        blank=True,
+        null=True,
     )
 
     capacity = models.PositiveIntegerField(
-        default=50,
+        default=500,
         help_text="Maximum number of participants allowed.",
     )
 
@@ -108,6 +108,15 @@ class Event(models.Model):
         related_name="events",
     )
 
+    # ==========================
+    # Offline Registration
+    # ==========================
+
+    offline_participants = models.PositiveIntegerField(
+        default=0,
+        help_text="Total number of participants registered offline.",
+    )
+
     class Meta:
         ordering = ["date", "time"]
 
@@ -115,12 +124,22 @@ class Event(models.Model):
         return self.name
 
     @property
-    def participant_count(self):
+    def online_participant_count(self):
         return self.participants.count()
 
     @property
+    def participant_count(self):
+        return (
+            self.online_participant_count +
+            self.offline_participants
+        )
+
+    @property
     def seats_remaining(self):
-        return max(0, self.capacity - self.participant_count)
+        return max(
+            0,
+            self.capacity - self.participant_count
+        )
 
     @property
     def is_full(self):
@@ -132,7 +151,8 @@ class Event(models.Model):
             datetime.combine(self.date, self.time)
         )
         return timezone.now() < event_datetime
-    
+
+
 class Attendance(models.Model):
     event = models.ForeignKey(
         Event,
@@ -161,3 +181,25 @@ class Attendance(models.Model):
     def __str__(self):
         status = "Present" if self.is_present else "Absent"
         return f"{self.participant.name} - {self.event.name} ({status})"
+
+
+class OfflineAttendance(models.Model):
+    event = models.OneToOneField(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="offline_attendance",
+    )
+
+    present = models.PositiveIntegerField(
+        default=0,
+    )
+
+    def __str__(self):
+        return self.event.name
+
+    class Meta:
+        verbose_name = "Offline Attendance"
+        verbose_name_plural = "Offline Attendance"
+
+    def __str__(self):
+        return f"{self.event.name} - Offline Attendance"
