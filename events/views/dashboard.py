@@ -36,6 +36,10 @@ def dashboard(request):
     now = timezone.localtime()
     today = now.date()
 
+    participant = Participant.objects.filter(
+        user=request.user
+    ).first()
+
     total_events = Event.objects.count()
 
     total_participants = Participant.objects.aggregate(
@@ -64,6 +68,7 @@ def dashboard(request):
     )
 
     context = {
+        "participant": participant,   # <-- add this
         "total_events": total_events,
         "total_participants": total_participants,
         "total_categories": total_categories,

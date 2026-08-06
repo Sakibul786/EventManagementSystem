@@ -39,6 +39,30 @@ class Participant(models.Model):
         unique=True,
     )
 
+    # ==========================
+    # Profile Information
+    # ==========================
+
+    profile_image = models.ImageField(
+        upload_to="profiles/",
+        blank=True,
+        null=True,
+    )
+
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+    )
+
+    address = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+
+    bio = models.TextField(
+        blank=True,
+    )
+
     class Meta:
         ordering = ["name"]
 

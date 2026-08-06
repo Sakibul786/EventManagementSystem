@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+{% block page_title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+
+        <h2 class="text-3xl font-bold mb-8">
+
+            Edit Profile
+
+        </h2>
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              class="space-y-6">
+
+            {% csrf_token %}
+
+            <!-- Profile Picture -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Profile Picture
+
+                </label>
+
+                {{ form.profile_image }}
+
+            </div>
+
+            <!-- First & Last Name -->
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div>
+
+                    <label class="block font-semibold mb-2">
+
+                        First Name
+
+                    </label>
+
+                    {{ form.first_name }}
+
+                </div>
+
+                <div>
+
+                    <label class="block font-semibold mb-2">
+
+                        Last Name
+
+                    </label>
+
+                    {{ form.last_name }}
+
+                </div>
+
+            </div>
+
+            <!-- Email -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Email
+
+                </label>
+
+                {{ form.email }}
+
+            </div>
+
+            <!-- Phone -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Phone
+
+                </label>
+
+                {{ form.phone }}
+
+            </div>
+
+            <!-- Address -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Address
+
+                </label>
+
+                {{ form.address }}
+
+            </div>
+
+            <!-- Bio -->
+
+            <div>
+
+                <label class="block font-semibold mb-2">
+
+                    Bio
+
+                </label>
+
+                {{ form.bio }}
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="flex gap-4 pt-4">
+
+                <button
+                    type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg">
+
+                    Save Changes
+
+                </button>
+
+                <a href="{% url 'profile' %}"
+                   class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-lg">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

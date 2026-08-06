@@ -15,7 +15,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileForm
 from .tokens import account_activation_token
 from events.models import Participant
 
@@ -203,6 +203,88 @@ def user_logout(request):
 
     return redirect("login")
 
+# ==========================================
+# My Profile
+# ==========================================
+
+@login_required
+def profile(request):
+
+    participant = get_object_or_404(
+        Participant,
+        user=request.user,
+    )
+
+    context = {
+        "participant": participant,
+    }
+
+    return render(
+        request,
+        "accounts/profile.html",
+        context,
+    )
+
+@login_required
+def edit_profile(request):
+
+    participant = get_object_or_404(
+        Participant,
+        user=request.user,
+    )
+
+    if request.method == "POST":
+
+        form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=participant,
+        )
+
+        if form.is_valid():
+
+            request.user.first_name = form.cleaned_data["first_name"]
+            request.user.last_name = form.cleaned_data["last_name"]
+            request.user.email = form.cleaned_data["email"]
+
+            request.user.save()
+
+            participant = form.save(commit=False)
+
+            participant.name = (
+                f"{request.user.first_name} {request.user.last_name}".strip()
+                or request.user.username
+            )
+
+            participant.email = request.user.email
+
+            participant.save()
+
+            messages.success(
+                request,
+                "Profile updated successfully."
+            )
+
+            return redirect("profile")
+
+    else:
+
+        form = ProfileForm(
+            instance=participant,
+            initial={
+                "first_name": request.user.first_name,
+                "last_name": request.user.last_name,
+                "email": request.user.email,
+            },
+        )
+
+    return render(
+        request,
+        "accounts/edit_profile.html",
+        {
+            "form": form,
+        },
+    )
 
 # ==========================================
 # Permission Functions
