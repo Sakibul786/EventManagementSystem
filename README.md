@@ -1,28 +1,48 @@
-# Event Management System
+# EventHub - Event Management System
 
-A web-based Event Management System developed using Django, PostgreSQL, and Tailwind CSS. The system provides role-based access control for administrators, organizers, and participants to efficiently manage events, registrations, and attendance.
-
----
-
-## Overview
-
-The system allows users to create, manage, and participate in events through a secure and user-friendly interface. It includes authentication, event registration, attendance management, search and filtering, and role-based permissions.
+A modern web-based Event Management System developed using Django, PostgreSQL, and Tailwind CSS. The system provides secure authentication, role-based access control, event management, participant registration, attendance management, and user profile management through a responsive and user-friendly interface.
 
 ---
 
-## Features
+# Overview
 
-### Authentication
+EventHub is designed to simplify event organization and participation. The system enables administrators and organizers to efficiently manage events while allowing participants to register, manage their profiles, and participate in events securely.
+
+The application follows Django best practices with authentication, authorization, responsive design, and role-based permissions.
+
+---
+
+# Features
+
+## Authentication
 
 - User Registration
-- Login and Logout
 - Email Verification
+- Login
+- Logout
+- Forgot Password
+- Reset Password
+- Change Password
 - Password Validation
 
-### Role-Based Access Control
+---
 
-**Administrator**
+## User Profile
 
+- View Profile
+- Edit Profile
+- Upload Profile Picture
+- Update Phone Number
+- Update Address
+- Update Bio
+
+---
+
+## Role-Based Access Control
+
+### Administrator
+
+- Dashboard
 - Manage Users
 - Change User Roles
 - Delete Users
@@ -31,22 +51,26 @@ The system allows users to create, manage, and participate in events through a s
 - Manage Participants
 - Manage Attendance
 
-**Organizer**
+### Organizer
 
+- Dashboard
 - Manage Events
 - Manage Categories
 - Manage Participants
-- View Attendance
+- Manage Attendance
 
-**Participant**
+### Participant
 
+- Dashboard
 - Register for Events
 - Cancel Event Registration
 - View Registered Events
+- Manage Personal Profile
+- Change Password
 
 ---
 
-## Event Management
+# Event Management
 
 - Create Events
 - Update Events
@@ -59,7 +83,7 @@ The system allows users to create, manage, and participate in events through a s
 
 ---
 
-## Category Management
+# Category Management
 
 - Create Categories
 - Update Categories
@@ -67,15 +91,16 @@ The system allows users to create, manage, and participate in events through a s
 
 ---
 
-## Participant Management
+# Participant Management
 
 - Add Participants
 - Update Participants
 - Delete Participants
+- Upload Participant Profile Image
 
 ---
 
-## Attendance Management
+# Attendance Management
 
 - Attendance List
 - Mark Attendance
@@ -84,7 +109,9 @@ The system allows users to create, manage, and participate in events through a s
 
 ---
 
-## Dashboard
+# Dashboard
+
+The dashboard provides quick access to important system information, including:
 
 - Total Events
 - Total Categories
@@ -95,9 +122,9 @@ The system allows users to create, manage, and participate in events through a s
 
 ---
 
-## Search and Filtering
+# Search and Filtering
 
-- Search by Event Name
+- Search Events by Name
 - Search by Location
 - Filter by Category
 - Filter by Date Range
@@ -105,24 +132,46 @@ The system allows users to create, manage, and participate in events through a s
 
 ---
 
-## Technology Stack
+# Responsive Design
 
-- Python 3
-- Django 6
-- PostgreSQL
-- Tailwind CSS
-- HTML5
-- CSS3
-- JavaScript
-- Pillow
-- ReportLab
-- OpenPyXL
+The application is fully responsive and optimized for:
+
+- Desktop
+- Tablet
+- Mobile Devices
 
 ---
 
-## Installation
+# Technology Stack
 
-### Clone the Repository
+## Backend
+
+- Python 3
+- Django 6
+
+## Database
+
+- PostgreSQL
+
+## Frontend
+
+- HTML5
+- Tailwind CSS
+- JavaScript
+
+## Libraries
+
+- Pillow
+- ReportLab
+- OpenPyXL
+- WhiteNoise
+- python-dotenv
+
+---
+
+# Installation
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/EventManagementSystem.git
@@ -130,9 +179,11 @@ git clone https://github.com/yourusername/EventManagementSystem.git
 cd EventManagementSystem
 ```
 
-### Create a Virtual Environment
+---
 
-**Windows**
+## Create Virtual Environment
+
+### Windows
 
 ```bash
 python -m venv venv
@@ -140,7 +191,7 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-**Linux/macOS**
+### Linux/macOS
 
 ```bash
 python3 -m venv venv
@@ -148,13 +199,17 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Install Dependencies
+---
+
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Configure Environment Variables
+---
+
+## Configure Environment Variables
 
 Create a `.env` file in the project root.
 
@@ -177,7 +232,9 @@ EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_gmail_app_password
 ```
 
-### Apply Migrations
+---
+
+## Apply Migrations
 
 ```bash
 python manage.py makemigrations
@@ -185,13 +242,17 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### Create a Superuser
+---
+
+## Create Superuser
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### Run the Development Server
+---
+
+## Run the Development Server
 
 ```bash
 python manage.py runserver
@@ -205,17 +266,19 @@ http://127.0.0.1:8000/
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```
 EventManagementSystem/
 │
 ├── accounts/
 ├── config/
+├── dashboard/
 ├── events/
 ├── media/
 ├── static/
 ├── templates/
+│
 ├── .env
 ├── .gitignore
 ├── manage.py
@@ -227,7 +290,7 @@ EventManagementSystem/
 
 ---
 
-## User Roles and Permissions
+# User Roles and Permissions
 
 | Feature | Admin | Organizer | Participant |
 |----------|:-----:|:---------:|:-----------:|
@@ -239,13 +302,30 @@ EventManagementSystem/
 | User Management | Yes | No | No |
 | Change User Role | Yes | No | No |
 | Delete User | Yes | No | No |
+| Profile Management | No | Yes | Yes |
+| Change Password | Yes | Yes | Yes |
 
 ---
 
-## Future Improvements
+# Screenshots
 
-- Email Notifications
+Add application screenshots in this section.
+
+```
+screenshots/
+├── dashboard.png
+├── login.png
+├── signup.png
+├── events.png
+├── profile.png
+```
+
+---
+
+# Future Improvements
+
 - QR Code Event Check-in
+- Email Notifications
 - Calendar Integration
 - Event Analytics
 - REST API
@@ -255,16 +335,18 @@ EventManagementSystem/
 
 ---
 
-## License
+# License
 
 This project was developed for academic and educational purposes.
 
 ---
 
-## Author
+# Author
 
-Md. Sakibul Hoque
-American International University Bangladesh (AIUB)
-Department of Computer Science and Engineering 
+**Md. Sakibul Hoque**
+
+Department of Computer Science and Engineering
+
+American International University-Bangladesh (AIUB)
 
 GitHub: https://github.com/Sakibul786
