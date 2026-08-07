@@ -1,43 +1,133 @@
 {% extends "base.html" %}
 
-{% block title %}Participant{% endblock %}
+{% block title %}Add Participant{% endblock %}
+{% block page_title %}Add Participant{% endblock %}
 
 {% block content %}
 
-<div class="max-w-xl mx-auto bg-white shadow-lg rounded-xl p-8">
+<div class="max-w-3xl mx-auto">
 
-    <h2 class="text-3xl font-bold mb-6">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
 
-        Participant Form
+        <!-- Header -->
 
-    </h2>
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-8">
 
-    <form method="POST">
+            <h2 class="text-4xl font-bold text-white">
 
-        {% csrf_token %}
+                Add Participant
 
-        {{ form.as_p }}
+            </h2>
 
-        <div class="mt-6">
+            <p class="text-black-200 mt-2">
 
-            <button
-                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                Register a new participant for your event.
 
-                Save
-
-            </button>
-
-            <a href="{% url 'participant_list' %}"
-               class="ml-4 text-gray-600">
-
-                Cancel
-
-            </a>
+            </p>
 
         </div>
 
-    </form>
+        <!-- Form -->
+
+        <div class="p-8">
+
+            <form method="POST" class="space-y-6">
+
+                {% csrf_token %}
+
+                {% for field in form %}
+
+                <div>
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+
+                        {{ field.label }}
+
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                    <p class="mt-2 text-xs text-gray-500">
+                        {{ field.help_text }}
+                    </p>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                    <p class="text-red-600 text-sm mt-2">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+
+                </div>
+
+                {% endfor %}
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+
+                    <button type="submit"
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+
+                        💾 Save Participant
+
+                    </button>
+
+                    <a href="{% url 'participant_list' %}"
+                       class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-xl font-semibold text-center transition">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
+
+<style>
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+input[type="password"],
+select,
+textarea{
+
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    background:#fff;
+    transition:.3s;
+    font-size:15px;
+
+}
+
+textarea{
+
+    min-height:120px;
+    resize:vertical;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+</style>
 
 {% endblock %}

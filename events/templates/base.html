@@ -182,19 +182,14 @@
 <div class="border-t border-gray-800 p-6">
 
     <p class="text-xs uppercase tracking-widest text-gray-500">
-
         Logged in as
-
     </p>
 
     <h3 class="mt-2 font-semibold text-lg">
-
         {{ user.get_full_name|default:user.username }}
-
     </h3>
 
     <p class="text-sm text-gray-400 mt-1">
-
         {% if user.is_superuser %}
             Superuser
         {% elif user|has_group:"Admin" %}
@@ -206,8 +201,21 @@
         {% endif %}
     </p>
 
+    <!-- My Profile -->
+  {% if user|has_group:"Participant" or user|has_group:"Organizer" %}
+
+<a href="{% url 'profile' %}"
+   class="sidebar-link {% if request.resolver_match.url_name == 'profile' %}sidebar-link-active{% endif %}">
+
+    <span>👤</span>
+    <span>My Profile</span>
+
+</a>
+
+{% endif %}
+    <!-- Logout -->
     <a href="{% url 'logout' %}"
-       class="btn-primary w-full mt-6 block text-center">
+       class="btn-primary w-full mt-3 block text-center">
 
         Logout
 
@@ -275,11 +283,26 @@
 
     </div>
 
-    <div class="h-11 w-11 rounded-full bg-black text-white flex items-center justify-center font-bold">
+<div class="w-12 h-12 flex-shrink-0">
 
-        {{ user.username|first|upper }}
+    {% if participant and participant.profile_image %}
 
-    </div>
+        <img
+            src="{{ participant.profile_image.url }}"
+            alt="{{ request.user.username }}"
+            class="w-12 h-12 rounded-full object-cover border border-gray-300 shadow">
+
+    {% else %}
+
+        <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center font-bold">
+
+            {{ request.user.username|first|upper }}
+
+        </div>
+
+    {% endif %}
+
+</div>
 
 </div>
 

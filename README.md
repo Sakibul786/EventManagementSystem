@@ -1,117 +1,112 @@
 # EventHub - Event Management System
 
-A modern web-based Event Management System developed using Django, PostgreSQL, and Tailwind CSS. The system provides secure authentication, role-based access control, event management, participant registration, attendance management, and user profile management through a responsive and user-friendly interface.
+A modern Event Management System built with Django, PostgreSQL, and Tailwind CSS. EventHub provides a secure role-based platform for administrators, organizers, and participants to manage events, registrations, attendance, user profiles, and reports.
 
 ---
 
-# Overview
+## Overview
 
-EventHub is designed to simplify event organization and participation. The system enables administrators and organizers to efficiently manage events while allowing participants to register, manage their profiles, and participate in events securely.
-
-The application follows Django best practices with authentication, authorization, responsive design, and role-based permissions.
+EventHub simplifies the process of organizing and managing events through a secure web application. It supports three user roles with different permissions and includes event registration, attendance management, profile management, PDF and Excel exports, and responsive user interfaces.
 
 ---
 
-# Features
+## Features
 
-## Authentication
+### Authentication
 
 - User Registration
 - Email Verification
-- Login
-- Logout
+- Login and Logout
 - Forgot Password
-- Reset Password
+- Password Reset via Email
 - Change Password
 - Password Validation
+- Profile Management
+- Profile Picture Upload
 
 ---
 
-## User Profile
+### Role-Based Access Control
 
-- View Profile
-- Edit Profile
-- Upload Profile Picture
-- Update Phone Number
-- Update Address
-- Update Bio
-
----
-
-## Role-Based Access Control
-
-### Administrator
+#### Administrator
 
 - Dashboard
 - Manage Users
-- Change User Roles
+- Assign User Roles
 - Delete Users
 - Manage Events
 - Manage Categories
 - Manage Participants
 - Manage Attendance
 
-### Organizer
+#### Organizer
 
 - Dashboard
-- Manage Events
+- Create Events
+- Edit Events
+- Delete Events
 - Manage Categories
 - Manage Participants
 - Manage Attendance
 
-### Participant
+#### Participant
 
 - Dashboard
 - Register for Events
 - Cancel Event Registration
 - View Registered Events
-- Manage Personal Profile
+- Update Profile
+- Upload Profile Picture
 - Change Password
 
 ---
 
-# Event Management
+## Event Management
 
 - Create Events
-- Update Events
+- Edit Events
 - Delete Events
-- Event Details
 - Event Image Upload
 - Event Capacity Management
+- Offline Participant Registration
 - Automatic Registration Closing
-- Full Capacity Detection
+- Registration Status
+- Event Details
 
 ---
 
-# Category Management
+## Category Management
 
 - Create Categories
-- Update Categories
+- Edit Categories
 - Delete Categories
 
 ---
 
-# Participant Management
+## Participant Management
 
 - Add Participants
-- Update Participants
+- Edit Participants
 - Delete Participants
-- Upload Participant Profile Image
+- Upload Profile Images
+- Manage Contact Information
 
 ---
 
-# Attendance Management
+## Attendance Management
 
-- Attendance List
-- Mark Attendance
-- Export Attendance to PDF
-- Export Attendance to Excel
+- Mark Online Attendance
+- Offline Attendance Management
+- Attendance Statistics
+- Attendance Percentage
+- Export Attendance as PDF
+- Export Attendance as Excel
 
 ---
 
-# Dashboard
+## Dashboard
 
-The dashboard provides quick access to important system information, including:
+Dashboard includes:
 
 - Total Events
 - Total Categories
@@ -122,9 +117,9 @@ The dashboard provides quick access to important system information, including:
 
 ---
 
-# Search and Filtering
+## Search and Filtering
 
-- Search Events by Name
+- Search Events
 - Search by Location
 - Filter by Category
 - Filter by Date Range
@@ -132,34 +127,33 @@ The dashboard provides quick access to important system information, including:
 
 ---
 
-# Responsive Design
+## Responsive Design
 
-The application is fully responsive and optimized for:
-
-- Desktop
-- Tablet
-- Mobile Devices
+- Desktop Friendly
+- Tablet Friendly
+- Mobile Responsive
+- Tailwind CSS Interface
 
 ---
 
-# Technology Stack
+## Technology Stack
 
-## Backend
+### Backend
 
 - Python 3
 - Django 6
 
-## Database
+### Database
 
 - PostgreSQL
 
-## Frontend
+### Frontend
 
 - HTML5
 - Tailwind CSS
 - JavaScript
 
-## Libraries
+### Libraries
 
 - Pillow
 - ReportLab
@@ -169,21 +163,21 @@ The application is fully responsive and optimized for:
 
 ---
 
-# Installation
+## Installation
 
-## Clone Repository
+### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/EventManagementSystem.git
+git clone https://github.com/YOUR_USERNAME/EventManagementSystem.git
 
 cd EventManagementSystem
 ```
 
 ---
 
-## Create Virtual Environment
+### Create a Virtual Environment
 
-### Windows
+#### Windows
 
 ```bash
 python -m venv venv
@@ -191,7 +185,7 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-### Linux/macOS
+#### Linux/macOS
 
 ```bash
 python3 -m venv venv
@@ -201,7 +195,7 @@ source venv/bin/activate
 
 ---
 
-## Install Dependencies
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -209,11 +203,9 @@ pip install -r requirements.txt
 
 ---
 
-## Configure Environment Variables
+### Configure Environment Variables
 
 Create a `.env` file in the project root.
-
-Example:
 
 ```env
 SECRET_KEY=your-secret-key
@@ -229,12 +221,12 @@ DB_HOST=localhost
 DB_PORT=5433
 
 EMAIL_HOST_USER=your_email@gmail.com
-EMAIL_HOST_PASSWORD=your_gmail_app_password
+EMAIL_HOST_PASSWORD=your_app_password
 ```
 
 ---
 
-## Apply Migrations
+### Apply Database Migrations
 
 ```bash
 python manage.py makemigrations
@@ -244,7 +236,7 @@ python manage.py migrate
 
 ---
 
-## Create Superuser
+### Create a Superuser
 
 ```bash
 python manage.py createsuperuser
@@ -252,13 +244,13 @@ python manage.py createsuperuser
 
 ---
 
-## Run the Development Server
+### Run the Development Server
 
 ```bash
 python manage.py runserver
 ```
 
-Open the application in your browser:
+Open:
 
 ```
 http://127.0.0.1:8000/
@@ -266,7 +258,7 @@ http://127.0.0.1:8000/
 
 ---
 
-# Project Structure
+## Project Structure
 
 ```
 EventManagementSystem/
@@ -276,58 +268,96 @@ EventManagementSystem/
 ├── dashboard/
 ├── events/
 ├── media/
+├── screenshots/
 ├── static/
 ├── templates/
 │
 ├── .env
 ├── .gitignore
 ├── manage.py
-├── package.json
 ├── requirements.txt
+├── package.json
 ├── tailwind.config.js
 └── README.md
 ```
 
 ---
 
-# User Roles and Permissions
+## User Permissions
 
-| Feature | Admin | Organizer | Participant |
-|----------|:-----:|:---------:|:-----------:|
+| Feature | Administrator | Organizer | Participant |
+|----------|:-------------:|:---------:|:-----------:|
 | Dashboard | Yes | Yes | Yes |
-| Event Management | Yes | Yes | View/Register |
+| Event Management | Yes | Yes | Register/View |
 | Category Management | Yes | Yes | No |
 | Participant Management | Yes | Yes | No |
 | Attendance Management | Yes | Yes | No |
 | User Management | Yes | No | No |
-| Change User Role | Yes | No | No |
-| Delete User | Yes | No | No |
-| Profile Management | No | Yes | Yes |
+| Assign Roles | Yes | No | No |
+| Delete Users | Yes | No | No |
+| Profile Management | Yes | Yes | Yes |
 | Change Password | Yes | Yes | Yes |
 
 ---
 
-# Screenshots
+## Screenshots
 
-Add application screenshots in this section.
+### Login
 
-```
-screenshots/
-├── dashboard.png
-├── login.png
-├── signup.png
-├── events.png
-├── profile.png
-```
+![Login](screenshots/Login.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Organizer Dashboard
+
+![Organizer Dashboard](screenshots/organizer-dashboard.png)
+
+### Participant Dashboard
+
+![Participant Dashboard](screenshots/participant-dashboard.png)
+
+### Events
+
+![Events](screenshots/events.png)
+
+### Attendance
+
+![Attendance](screenshots/attendance.png)
+
+### Users
+
+![Users](screenshots/users.png)
+
+### Profile
+
+![Profile](screenshots/profile.png)
+
+### Create Account
+
+![Create Account](screenshots/create-account.png)
+
+### Registration Confirmation
+
+![Registration Confirmation](screenshots/register-confirm.png)
+
+### Password Reset Email
+
+![Password Reset Email](screenshots/forget-pass-mail.png)
+
+### Password Reset
+
+![Password Reset](screenshots/pass-reset.png)
 
 ---
 
-# Future Improvements
+## Future Improvements
 
-- QR Code Event Check-in
+- QR Code Check-in
 - Email Notifications
 - Calendar Integration
-- Event Analytics
+- Event Analytics Dashboard
 - REST API
 - Mobile Application
 - Dark Mode
@@ -335,13 +365,13 @@ screenshots/
 
 ---
 
-# License
+## License
 
 This project was developed for academic and educational purposes.
 
 ---
 
-# Author
+## Author
 
 **Md. Sakibul Hoque**
 

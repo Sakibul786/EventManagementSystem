@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from events.models import Participant
 
 
 class SignUpForm(UserCreationForm):
@@ -94,3 +95,45 @@ class SignUpForm(UserCreationForm):
             )
 
         return username
+
+class ProfileForm(forms.ModelForm):
+
+    first_name = forms.CharField(
+        max_length=100,
+    )
+
+    last_name = forms.CharField(
+        max_length=100,
+    )
+
+    email = forms.EmailField()
+
+    class Meta:
+        model = Participant
+        fields = [
+            "profile_image",
+            "phone",
+            "address",
+            "bio",
+        ]
+
+        widgets = {
+            "phone": forms.TextInput(
+                attrs={
+                    "class": "w-full border rounded-lg px-4 py-2",
+                }
+            ),
+
+            "address": forms.TextInput(
+                attrs={
+                    "class": "w-full border rounded-lg px-4 py-2",
+                }
+            ),
+
+            "bio": forms.Textarea(
+                attrs={
+                    "rows": 4,
+                    "class": "w-full border rounded-lg px-4 py-2",
+                }
+            ),
+        }    
