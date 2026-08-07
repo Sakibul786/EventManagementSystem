@@ -352,6 +352,24 @@ EventManagementSystem/
 
 ---
 
+## Deployed Version Notice
+
+The deployed version is intended for demonstration purposes and does not include some features that are available in the complete source code.
+
+The following features are currently unavailable in the deployed version:
+
+- Forgot Password
+- Email Verification
+- User Profile
+- Edit Profile
+- Profile Picture Update
+- Offline Participant Registration
+- Offline Attendance Management
+
+These features are fully implemented in the source code and can be used when the project is run locally with the required email and database configuration.
+
+---
+
 ## Future Improvements
 
 - QR Code Check-in
